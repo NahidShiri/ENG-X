@@ -1,0 +1,884 @@
+<title>ENG-X Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --surface:#F5F5F5;
+    --surface-2:#FFFFFF;
+    --border:#E5E5E5;
+    --text:#0A0A0A;
+    --text-muted:#525252;
+    --text-soft:#737373;
+    --red:#F01414;
+    --red-ink:#0A0A0A;
+    --header-bg:#0A0A0A;
+    --header-text:#FFFFFF;
+    --header-muted:#B3B3B3;
+    --header-border:#262626;
+    --focus:#0A0A0A;
+    --shadow: 0 1px 0 rgba(10,10,10,0.04);
+    --maxw: 1200px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A0A0A;
+      --surface:#171717;
+      --surface-2:#141414;
+      --border:#333333;
+      --text:#FFFFFF;
+      --text-muted:#B3B3B3;
+      --text-soft:#8A8A8A;
+      --red-ink:#0A0A0A;
+      --header-bg:#000000;
+      --header-text:#FFFFFF;
+      --header-muted:#9A9A9A;
+      --header-border:#262626;
+      --focus:#FFFFFF;
+      --shadow: 0 1px 0 rgba(255,255,255,0.06);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A0A0A;
+    --surface:#171717;
+    --surface-2:#141414;
+    --border:#333333;
+    --text:#FFFFFF;
+    --text-muted:#B3B3B3;
+    --text-soft:#8A8A8A;
+    --red-ink:#0A0A0A;
+    --header-bg:#000000;
+    --header-text:#FFFFFF;
+    --header-muted:#9A9A9A;
+    --header-border:#262626;
+    --focus:#FFFFFF;
+    --shadow: 0 1px 0 rgba(255,255,255,0.06);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;}
+  [hidden]{display:none!important;}
+  h1,h2,h3,h4{
+    font-family:'Inter Tight','Inter',sans-serif;
+    line-height:1.12;
+    text-wrap:balance;
+    margin:0;
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font-family:inherit;}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+  html{scroll-behavior:smooth;}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding-inline:24px;}
+  @media (max-width:640px){ .wrap{padding-inline:16px;} }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .eyebrow::before{content:""; width:16px; height:2px; background:var(--red); display:inline-block;}
+
+  /* ---------- Logo ---------- */
+  .logo{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:inherit;}
+  .logo-mark{width:26px; height:26px; flex:none;}
+  .logo-word{font-family:'Inter Tight','Inter',sans-serif; font-weight:800; font-size:19px; letter-spacing:-0.01em;}
+  .logo-word sup{color:var(--red); font-size:0.62em; font-weight:800; margin-left:1px; top:-0.9em;}
+
+  /* ---------- Header ---------- */
+  header.site{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+    background:var(--header-bg); color:var(--header-text);
+    border-bottom:1px solid var(--header-border);
+  }
+  .header-row{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px;}
+  .header-row .logo{color:var(--header-text);}
+  nav.primary{display:flex; align-items:center; gap:4px;}
+  nav.primary a{
+    padding:8px 12px; font-size:13.5px; font-weight:600; color:var(--header-muted);
+    text-decoration:none; border-radius:2px; transition:color .15s ease;
+    white-space:nowrap;
+  }
+  nav.primary a:hover{color:var(--header-text);}
+  .header-actions{display:flex; align-items:center; gap:10px;}
+
+  .langswitch{display:flex; border:1px solid var(--header-border); border-radius:3px; overflow:hidden;}
+  .langswitch button{
+    background:transparent; color:var(--header-muted); border:0; padding:6px 9px;
+    font-size:12px; font-weight:700; letter-spacing:.03em; cursor:pointer;
+  }
+  .langswitch button + button{border-left:1px solid var(--header-border);}
+  .langswitch button[aria-pressed="true"]{background:var(--red); color:var(--red-ink);}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 20px; font-size:14px; font-weight:700; text-decoration:none;
+    border-radius:2px; border:1.5px solid transparent; cursor:pointer;
+    height:48px; white-space:nowrap;
+  }
+  .btn-primary{background:var(--red); color:var(--red-ink);}
+  .btn-primary:hover{filter:brightness(1.06);}
+  .btn-outline-dark{background:transparent; color:var(--header-text); border-color:var(--header-border);}
+  .btn-outline-dark:hover{border-color:var(--header-text);}
+  .btn-outline{background:transparent; color:var(--text); border-color:var(--border);}
+  .btn-outline:hover{border-color:var(--text);}
+  .btn-block{width:100%;}
+  .btn-sm{height:40px; padding:0 16px; font-size:13px;}
+
+  .navtoggle{
+    display:none; background:transparent; border:1px solid var(--header-border); color:var(--header-text);
+    width:40px; height:40px; border-radius:3px; cursor:pointer; align-items:center; justify-content:center;
+  }
+  .navtoggle svg{width:18px; height:18px;}
+
+  @media (max-width:900px){
+    nav.primary{
+      position:absolute; top:100%; left:0; right:0; background:var(--header-bg);
+      border-bottom:1px solid var(--header-border);
+      flex-direction:column; align-items:stretch; padding:8px; gap:0;
+      display:none;
+    }
+    nav.primary.open{display:flex;}
+    nav.primary a{padding:12px 10px; border-radius:2px;}
+    .navtoggle{display:inline-flex;}
+    .header-row{position:relative;}
+    .cta-desktop{display:none;}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--header-bg); color:var(--header-text);
+    position:relative; overflow:hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+    padding-bottom:64px;
+  }
+  .hero::after{
+    content:""; position:absolute; right:-8%; top:-20%; width:60%; height:140%;
+    background: linear-gradient(135deg, transparent 46%, var(--red) 46%, var(--red) 47.4%, transparent 47.4%),
+                linear-gradient(135deg, transparent 56%, #262626 56%, #262626 58%, transparent 58%);
+    opacity:.9; pointer-events:none;
+  }
+  .hero-inner{position:relative; padding-block:72px 40px; max-width:760px;}
+  .hero h1{font-size:clamp(34px,5.6vw,60px); font-weight:800; margin-top:14px; letter-spacing:-0.02em;}
+  .hero p.lead{margin-top:20px; font-size:17px; color:var(--header-muted); max-width:56ch;}
+  .hero-cta{display:flex; gap:12px; margin-top:32px; flex-wrap:wrap;}
+
+  /* ---------- Section shell ---------- */
+  section{padding-block:72px;}
+  section.tinted{background:var(--surface);}
+  .section-head{max-width:640px; margin-bottom:36px;}
+  .section-head h2{font-size:clamp(26px,3.4vw,36px); font-weight:800; margin-top:12px; letter-spacing:-0.01em;}
+  .section-head p{margin-top:12px; color:var(--text-muted); font-size:15.5px;}
+
+  /* ---------- About / pillars ---------- */
+  .about-grid{display:grid; grid-template-columns: 1.1fr 1fr; gap:56px; align-items:start;}
+  .about-grid p.body{color:var(--text-muted); font-size:15.5px; line-height:1.7;}
+  .pillars{display:grid; grid-template-columns:repeat(2,1fr); gap:2px; background:var(--border);}
+  .pillar{
+    background:var(--surface-2); padding:18px; min-height:120px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .pillar .num{font-size:11px; font-weight:700; color:var(--text-soft); font-variant-numeric:tabular-nums;}
+  .pillar h4{font-size:15px; font-weight:700; margin-top:10px;}
+  .pillar p{font-size:12.5px; color:var(--text-muted); margin-top:6px;}
+  .pillar-wide{grid-column:1 / -1; flex-direction:row; align-items:center; gap:16px;}
+  .pillar-wide > div{display:flex; align-items:baseline; gap:10px;}
+  .pillar-wide h4{margin-top:0;}
+  .pillar-wide p{margin-top:0;}
+  @media (max-width:800px){ .about-grid{grid-template-columns:1fr; gap:32px;} }
+  @media (max-width:500px){ .pillars{grid-template-columns:1fr;} }
+
+  /* ---------- Forum / event ---------- */
+  .forum-card{
+    background:var(--header-bg); color:var(--header-text); border-radius:3px; overflow:hidden;
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 0 100%);
+  }
+  .forum-top{padding:40px 40px 28px; display:flex; flex-direction:column; gap:14px; border-bottom:1px solid var(--header-border);}
+  .forum-theme{font-size:clamp(22px,3vw,30px); font-weight:800; letter-spacing:-0.01em;}
+  .forum-note{font-size:12.5px; color:var(--header-muted);}
+  .forum-desc{font-size:14.5px; color:var(--header-muted); max-width:64ch; margin-top:4px;}
+  .meta-list{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--header-border);}
+  .meta-item{background:var(--header-bg); padding:20px 24px;}
+  .meta-item .k{font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--header-muted);}
+  .meta-item .v{margin-top:8px; font-size:14.5px; font-weight:600;}
+  @media (max-width:800px){ .meta-list{grid-template-columns:repeat(2,1fr);} }
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--header-border);}
+  .stat-tile{background:var(--header-bg); padding:26px 24px;}
+  .stat-tile .val{font-size:clamp(28px,4vw,40px); font-weight:800; color:var(--red); font-variant-numeric:tabular-nums; letter-spacing:-0.01em;}
+  .stat-tile .lbl{margin-top:6px; font-size:12.5px; color:var(--header-muted); line-height:1.4;}
+  .stats-note{padding:14px 24px 28px; font-size:12px; color:var(--header-muted);}
+  @media (max-width:700px){ .stat-row{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- Tickets ---------- */
+  .tickets-grid{display:grid; grid-template-columns:1fr 1fr 1.1fr; gap:24px; align-items:start;}
+  @media (max-width:980px){ .tickets-grid{grid-template-columns:1fr;} }
+  .tier{
+    background:var(--surface-2); border:1px solid var(--border); padding:28px;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+    display:flex; flex-direction:column; gap:16px; height:100%;
+  }
+  .tier.vip{border-color:var(--red);}
+  .tier-name{font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-soft);}
+  .tier-price{font-size:30px; font-weight:800; letter-spacing:-0.01em;}
+  .tier-feats li{
+    font-size:13.5px; color:var(--text-muted); padding-left:18px; position:relative; padding-block:4px;
+  }
+  .tier-feats li::before{content:""; position:absolute; left:0; top:11px; width:8px; height:2px; background:var(--red);}
+
+  .order-card{background:var(--surface); border:1px solid var(--border); padding:28px;}
+  .order-card h3{font-size:16px; font-weight:700;}
+  .field{margin-top:16px; display:flex; flex-direction:column; gap:6px;}
+  .field label{font-size:12.5px; font-weight:600; color:var(--text-muted);}
+  .field input, .field select, .field textarea{
+    height:48px; border:1px solid var(--border); border-radius:2px; padding:0 14px;
+    font-size:14.5px; background:var(--surface-2); color:var(--text); font-family:inherit;
+  }
+  .field textarea{height:auto; padding:12px 14px; min-height:96px; resize:vertical;}
+  .field select{appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%23737373'/></svg>"); background-repeat:no-repeat; background-position:right 14px center;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:480px){ .row2{grid-template-columns:1fr;} }
+  .epoint-badge{
+    margin-top:18px; display:flex; align-items:center; gap:10px;
+    border:1px dashed var(--border); padding:10px 12px; font-size:12px; color:var(--text-muted);
+  }
+  .epoint-badge b{color:var(--text); font-weight:700;}
+  .order-error{margin-top:14px; font-size:13px; color:var(--red); font-weight:600;}
+  .order-result{
+    margin-top:18px; border:1px solid var(--border); background:var(--surface-2);
+    padding:16px; font-size:13.5px; color:var(--text-muted); border-left:3px solid var(--red);
+  }
+
+  /* ---------- News ---------- */
+  .news-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media (max-width:900px){ .news-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:640px){ .news-grid{grid-template-columns:1fr;} }
+  .news-card{
+    background:var(--surface-2); border:1px solid var(--border); display:flex; flex-direction:column;
+    cursor:pointer; text-align:left; width:100%; padding:0; font-family:inherit;
+  }
+  .news-media{height:8px; background:var(--red);}
+  .news-body{padding:22px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .news-date{font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text-soft); font-variant-numeric:tabular-nums;}
+  .news-title{font-size:16.5px; font-weight:700; line-height:1.3;}
+  .news-excerpt{font-size:13.5px; color:var(--text-muted); flex:1;}
+  .news-link{font-size:12.5px; font-weight:700; color:var(--red); margin-top:6px;}
+
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(10,10,10,.6); z-index:80;
+    display:flex; align-items:flex-end; justify-content:center; padding:0;
+  }
+  @media (min-width:640px){ .modal-backdrop{align-items:center; padding:24px;} }
+  .modal{
+    background:var(--bg); color:var(--text); width:100%; max-width:640px; max-height:88vh; overflow-y:auto;
+    border-top:4px solid var(--red);
+  }
+  @media (min-width:640px){ .modal{border-top-width:4px;} }
+  .modal-inner{padding:28px;}
+  .modal-close{
+    float:right; background:transparent; border:1px solid var(--border); border-radius:2px;
+    width:36px; height:36px; cursor:pointer; color:var(--text); font-size:16px;
+  }
+  .modal h3{font-size:22px; font-weight:800; margin-top:16px; clear:both;}
+  .modal .news-date{margin-top:2px;}
+  .modal p.body{margin-top:16px; font-size:15px; color:var(--text-muted); line-height:1.7;}
+
+  /* ---------- University timeline ---------- */
+  .timeline-cols{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
+  @media (max-width:760px){ .timeline-cols{grid-template-columns:1fr;} }
+  .tl-year{font-size:13px; font-weight:800; color:var(--red); letter-spacing:.04em;}
+  .tl-list{margin-top:16px; border-top:1px solid var(--border);}
+  .tl-row{display:flex; gap:18px; padding:14px 0; border-bottom:1px solid var(--border); align-items:baseline;}
+  .tl-date{flex:none; width:108px; font-size:13px; font-weight:700; color:var(--text-soft); font-variant-numeric:tabular-nums;}
+  .tl-name{font-size:14.5px; font-weight:600;}
+  .tl-note{margin-top:14px; font-size:12px; color:var(--text-soft);}
+
+  /* ---------- Partners ---------- */
+  .partners-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border);}
+  @media (max-width:900px){ .partners-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .partners-grid{grid-template-columns:1fr;} }
+  .partner-card{background:var(--surface-2); padding:20px;}
+  .partner-card h4{font-size:14.5px; font-weight:700;}
+  .partner-card p{margin-top:6px; font-size:12.5px; color:var(--text-muted);}
+  .partners-note{margin-top:20px; font-size:13px; color:var(--text-muted);}
+  .partners-cta{margin-top:24px;}
+
+  /* ---------- Contact ---------- */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:48px;}
+  @media (max-width:800px){ .contact-grid{grid-template-columns:1fr;} }
+  .contact-note{margin-top:16px; font-size:13px; color:var(--text-soft); border-left:2px solid var(--border); padding-left:12px;}
+
+  /* ---------- Footer ---------- */
+  footer.site{background:var(--header-bg); color:var(--header-muted); padding-block:36px;}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding-bottom:16px; border-bottom:1px solid var(--header-border);}
+  .footer-row .logo{color:var(--header-text);}
+  .footer-bottom{margin-top:16px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:12px;}
+  .footer-status{max-width:640px;}
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+
+<header class="site">
+  <div class="wrap header-row">
+    <a href="#home" class="logo" aria-label="ENG-X">
+      <svg class="logo-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M2 2 L11 13 L2 24" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+        <path d="M24 2 L15 13 L24 24" stroke="#F01414" stroke-width="3" stroke-linecap="square"/>
+      </svg>
+      <span class="logo-word">ENG<sup>X</sup></span>
+    </a>
+    <button class="navtoggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="primary" id="primaryNav">
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#forum" data-i18n="nav.forum">Forum</a>
+      <a href="#tickets" data-i18n="nav.tickets">Tickets</a>
+      <a href="#news" data-i18n="nav.news">News</a>
+      <a href="#university" data-i18n="nav.university">University</a>
+      <a href="#partners" data-i18n="nav.partners">Partners</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <div class="langswitch" role="group" aria-label="Language">
+        <button type="button" data-lang="az">AZ</button>
+        <button type="button" data-lang="ru">RU</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a href="#tickets" class="btn btn-primary cta-desktop" data-i18n="hero.ctaPrimary">Get tickets</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="wrap hero-inner">
+      <span class="eyebrow" data-i18n="hero.eyebrow">Engineering platform</span>
+      <h1 data-i18n="hero.title">Engineering, connected.</h1>
+      <p class="lead" data-i18n="hero.body"></p>
+      <div class="hero-cta">
+        <a href="#tickets" class="btn btn-primary" data-i18n="hero.ctaPrimary">Choose a ticket</a>
+        <a href="#forum" class="btn btn-outline-dark" data-i18n="hero.ctaSecondary">Explore the programme</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div>
+          <span class="eyebrow" data-i18n="about.eyebrow">About</span>
+          <h2 style="font-size:clamp(24px,3.2vw,32px); font-weight:800; margin-top:12px;" data-i18n="about.title"></h2>
+          <p class="body" style="margin-top:18px;" data-i18n="about.body"></p>
+        </div>
+        <div>
+          <h3 style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text-soft); margin-bottom:2px;" data-i18n="about.pillarsTitle"></h3>
+          <div class="pillars" id="pillars"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tinted" id="forum">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="forum.eyebrow">ENG-X Forum 2026</span>
+      </div>
+      <div class="forum-card">
+        <div class="forum-top">
+          <div>
+            <div class="forum-note" data-i18n="forum.note"></div>
+            <div class="forum-theme" data-i18n="forum.title"></div>
+          </div>
+          <p class="forum-desc" data-i18n="forum.desc"></p>
+        </div>
+        <div class="meta-list" id="forumMeta"></div>
+        <div class="stat-row" id="forumStats"></div>
+        <div class="stats-note" data-i18n="forum.statsNote"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tickets">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="tickets.eyebrow">Tickets</span>
+        <h2 data-i18n="tickets.title"></h2>
+        <p data-i18n="tickets.subtitle"></p>
+      </div>
+      <div class="tickets-grid" id="ticketsGrid">
+        <!-- tier cards injected -->
+        <div class="order-card">
+          <h3 data-i18n="tickets.formTitle"></h3>
+          <form id="orderForm" novalidate>
+            <div class="field">
+              <label for="ord_name" data-i18n="tickets.labels.name"></label>
+              <input id="ord_name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label for="ord_email" data-i18n="tickets.labels.email"></label>
+                <input id="ord_email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="ord_phone" data-i18n="tickets.labels.phone"></label>
+                <input id="ord_phone" name="phone" type="tel" autocomplete="tel" required>
+              </div>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label for="ord_type" data-i18n="tickets.labels.type"></label>
+                <select id="ord_type" name="type" required></select>
+              </div>
+              <div class="field">
+                <label for="ord_qty" data-i18n="tickets.labels.qty"></label>
+                <input id="ord_qty" name="qty" type="number" min="1" max="10" value="1" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;" data-i18n="tickets.labels.submit"></button>
+            <div class="epoint-badge">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M2 9.5h20" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span><b>Epoint</b> — <span data-i18n="tickets.epointNote"></span></span>
+            </div>
+            <p class="order-error" id="orderError" hidden data-i18n="tickets.errorRequired"></p>
+            <div class="order-result" id="orderResult" hidden></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tinted" id="news">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="news.eyebrow">News</span>
+        <h2 data-i18n="news.title"></h2>
+      </div>
+      <div class="news-grid" id="newsGrid"></div>
+    </div>
+  </section>
+
+  <section id="university">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="university.eyebrow">University Series</span>
+        <h2 data-i18n="university.title"></h2>
+      </div>
+      <div class="timeline-cols" id="universityCols"></div>
+      <p class="tl-note" data-i18n="university.note"></p>
+    </div>
+  </section>
+
+  <section class="tinted" id="partners">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="partners.eyebrow">Partnership</span>
+        <h2 data-i18n="partners.title"></h2>
+        <p data-i18n="partners.note"></p>
+      </div>
+      <div class="partners-grid" id="partnersGrid"></div>
+      <div class="partners-cta">
+        <a href="#contact" class="btn btn-outline" data-i18n="partners.cta"></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div>
+          <span class="eyebrow" data-i18n="contact.eyebrow">Contact</span>
+          <h2 style="font-size:clamp(24px,3.2vw,32px); font-weight:800; margin-top:12px;" data-i18n="contact.title"></h2>
+          <p class="contact-note" data-i18n="contact.note"></p>
+        </div>
+        <form id="contactForm" novalidate>
+          <div class="field">
+            <label for="c_name" data-i18n="contact.labels.name"></label>
+            <input id="c_name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="c_email" data-i18n="contact.labels.email"></label>
+            <input id="c_email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="c_message" data-i18n="contact.labels.message"></label>
+            <textarea id="c_message" name="message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:18px;" data-i18n="contact.labels.submit"></button>
+          <div class="order-result" id="contactResult" hidden></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="footer-row">
+      <a href="#home" class="logo" aria-label="ENG-X">
+        <svg class="logo-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <path d="M2 2 L11 13 L2 24" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+          <path d="M24 2 L15 13 L24 24" stroke="#F01414" stroke-width="3" stroke-linecap="square"/>
+        </svg>
+        <span class="logo-word">ENG<sup>X</sup></span>
+      </a>
+      <div class="langswitch" role="group" aria-label="Language">
+        <button type="button" data-lang="az">AZ</button>
+        <button type="button" data-lang="ru">RU</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> ENG-X. <span data-i18n="footer.rights"></span></span>
+      <span class="footer-status" data-i18n="footer.status"></span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-inner">
+      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+      <div class="news-date" id="modalDate"></div>
+      <h3 id="modalTitle"></h3>
+      <p class="body" id="modalBody"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var translations = {
+    az: {
+      nav:{home:"Ana səhifə", about:"Haqqımızda", forum:"Forum", tickets:"Biletlər", news:"Xəbərlər", university:"Universitet Seriyası", partners:"Tərəfdaşlıq", contact:"Əlaqə"},
+      hero:{eyebrow:"Mühəndislik platforması", title:"Mühəndislik, əlaqədə.",
+        body:"ENG-X mühəndisləri, gələcək mühəndisləri, sənayeni və akademiyanı bir araya gətirən platformadır. Bilik mübadiləsi, peşəkar əlaqələr və birgə layihələr vasitəsilə mühəndislik potensialını real tərəqqiyə çevirməyi hədəfləyir.",
+        ctaPrimary:"Bileti seç", ctaSecondary:"Proqramı kəşf et"},
+      about:{eyebrow:"Haqqımızda", title:"Bir tədbirdən daha böyük sistem",
+        body:"Mühəndislik bilik, insanlar və tətbiq imkanları birləşəndə daha güclü olur. ENG-X bu əlaqəni qurmaq üçün formalaşdırılan platformadır. Mühəndisləri, gələcək mühəndisləri, universitetləri, sənaye və innovasiya ekosistemini bir araya gətirən ENG-X praktik bilik mübadiləsini və məqsədli əməkdaşlığı önə çıxarır. Forum, icma, sənaye əlaqələri, layihələr və rəqəmsal mühit vahid yanaşmanın hissələridir.",
+        pillarsTitle:"Beş istiqamət",
+        pillars:[{name:"Forum",desc:"Canlı bilik, müzakirə və əlaqə platforması."},{name:"İcma",desc:"Görüşdən sonra da davam edən peşəkar əlaqə."},{name:"Sənaye",desc:"Sənaye problemləri üzrə tərəfdaşlıq və dialoq."},{name:"Layihələr",desc:"Tətbiq, sınaq və həll yaradan layihələr."},{name:"Rəqəmsal",desc:"Bilik, proqram və əlaqənin rəqəmsal infrastrukturu."}]},
+      forum:{eyebrow:"ENG-X Forum 2026", title:"Gələcəyin körpüsü: mühəndislik", note:"Tədbir mövzusu; işçi başlıqdır.",
+        desc:"Böyük flagship ENG-X tədbiri mühəndisləri, tələbələri və sənaye nümayəndələrini bir səhnədə birləşdirir. Çıxışlar, networking, coffee break və korporativ iştirak eyni proqramda yer alır.",
+        metaLabels:{venue:"Məkan", date:"Tarix", duration:"Müddət", format:"Format"},
+        meta:{venue:"Nizami Kino Mərkəzi, Bakı", date:"2026-cı ilin aprelı, bazar günü (dəqiqləşdirilir)", duration:"4–5 saat", format:"Çıxışlar, networking, coffee break"},
+        stats:[{value:"500",label:"Gözlənilən iştirakçı (ilkin hədəf)"},{value:"110",label:"VIP yer (ilkin bölgü)"},{value:"6–10",label:"Spiker"},{value:"4–5",label:"Saat proqram"}],
+        statsNote:"Rəqəmlər ilkin işçi hədəflərdir; dəqiqləşən kimi yenilənir."},
+      tickets:{eyebrow:"Biletlər", title:"Bileti seç", subtitle:"Qiymət və say ilkin plandır (20–30 AZN diapazonu); dəqiqləşən kimi yenilənəcək.",
+        tiers:[{name:"Ümumi bilet",price:"20 AZN-dən",features:["Giriş və əsas proqram","Networking","Coffee break"]},{name:"VIP bilet",price:"30 AZN-dən",features:["Reserved oturacaq","VIP networking zonası","Spikerlərlə yaxın ünsiyyət"]}],
+        formTitle:"Sifariş", labels:{name:"Ad Soyad",email:"E-poçt",phone:"Telefon",type:"Bilet növü",qty:"Say",submit:"Ödənişə keç"},
+        epointNote:"Ödəniş Epoint sistemi ilə həyata keçiriləcək.",
+        integrationNotice:"Sifarişiniz qeydə alındı. Epoint ödəniş inteqrasiyası hazırlanma mərhələsindədir — təsdiq üçün göstərdiyiniz əlaqə vasitəsi ilə sizinlə bağlantı qurulacaq.",
+        errorRequired:"Zəhmət olmasa bütün sahələri doldurun."},
+      news:{eyebrow:"Xəbərlər", title:"Son xəbərlər", readMore:"Ətraflı oxu", close:"Bağla",
+        items:[
+          {date:"19.09.2026", title:"ENG-X Forum konsepsiyası açıqlandı", excerpt:"Böyük flagship tədbirin ilkin konsepti — məkan, format və mövzu müəyyənləşdi.", body:"ENG-X Forum 2026-cı ildə Bakıda, Nizami Kino Mərkəzində keçiriləcək. Tədbirin işçi mövzusu \"Gələcəyin körpüsü: mühəndislik\" olaraq seçilib. Proqram çıxışlar, networking və coffee break formatını birləşdirir; təxminən 500 nəfərin iştirakı gözlənilir. Bütün rəqəmlər ilkin plandır və dəqiqləşən kimi yenilənəcək."},
+          {date:"19.09.2026", title:"Universitet Seriyası 2026 planı elan edildi", excerpt:"ADNSU, AzTU və BANM ilə pilot mərhələnin ilk üç tədbiri təqvimə düşdü.", body:"ENG-X Universitet Seriyası çərçivəsində 2026-cı ildə üç tədbir planlaşdırılıb: 22 oktyabr — ADNSU, 19 noyabr — Azərbaycan Texniki Universiteti, 10 dekabr — Bakı Ali Neft Məktəbi. Bu üç tədbir pilot mərhələ kimi qəbul edilir; nəticələr növbəti mərhələnin əsasını təşkil edəcək."},
+          {date:"19.09.2026", title:"ENG-X müstəqil brend prinsiplərini təsdiqlədi", excerpt:"Tərəfdaşlıq mülkiyyət demək deyil — ENG-X öz brendini, strategiyasını və roadmap-ını qoruyur.", body:"ENG-X institusional tərəfdaşlarla işləyərkən \"Partnership ≠ Ownership\" prinsipini əsas götürür. Brend adı, loqo, vizual kimlik, domain, kommersiya modeli və uzunmüddətli roadmap ENG-X tərəfində qalır. Tərəfdaşlar konkret tədbirlərdə co-organizer ola bilər, lakin platforma ENG-X-in müstəqil idarəetməsində qalır."}
+        ]},
+      university:{eyebrow:"Universitet Seriyası", title:"ENG-X University Tour 2026–2027", note:"İlkin roadmap; tarixlər dəyişə bilər.",
+        years:[
+          {year:"2026", events:[{date:"22 oktyabr",name:"ADNSU"},{date:"19 noyabr",name:"Azərbaycan Texniki Universiteti"},{date:"10 dekabr",name:"Bakı Ali Neft Məktəbi"}]},
+          {year:"2027", events:[{date:"11 mart",name:"Bakı Mühəndislik Universiteti"},{date:"22 aprel",name:"Azərbaycan Memarlıq və İnşaat Universiteti"},{date:"20 may",name:"Sumqayıt Dövlət Universiteti"},{date:"23 sentyabr",name:"UFAZ"},{date:"21 oktyabr",name:"Xəzər Universiteti"},{date:"18 noyabr",name:"Qarabağ Universiteti"}]}
+        ]},
+      partners:{eyebrow:"Tərəfdaşlıq", title:"Tərəfdaş kateqoriyaları", note:"Sponsor paketlərinin fəlsəfəsi: Visibility + Access + Talent + Community + Industry Positioning.",
+        items:[{name:"Baş tərəfdaş",desc:"Əsas tərəfdaşlıq öhdəlikləri; eksklüzivlik yalnız müqavilədə."},{name:"Strateji tərəfdaş",desc:"Uzunmüddətli institusional və ya strateji dəyər."},{name:"Sənaye tərəfdaşı",desc:"Sahə ekspertizası, real problem və əməkdaşlıq."},{name:"Texnologiya tərəfdaşı",desc:"Rəqəmsal, avadanlıq və ya texniki dəstək."},{name:"Akademik tərəfdaş",desc:"Akademik əməkdaşlıq, ekspertiza və ya universitet rolu."},{name:"Dəstək tərəfdaşı",desc:"Maliyyə, natura və ya əməliyyat töhfəsi."},{name:"Media tərəfdaşı",desc:"Razılaşdırılmış informasiya dəstəyi."}],
+        cta:"Tərəfdaşlığı müzakirə edək"},
+      contact:{eyebrow:"Əlaqə", title:"Bizimlə əlaqə saxlayın", note:"Rəsmi əlaqə kanalları təsdiqləndikdən sonra bura əlavə olunacaq.",
+        labels:{name:"Ad Soyad",email:"E-poçt",message:"Mesaj",submit:"Göndər"},
+        successNotice:"Mesajınız qeydə alındı. Tezliklə sizinlə əlaqə saxlanılacaq."},
+      footer:{rights:"Bütün hüquqlar qorunur.", status:"Sayt inkişaf mərhələsindədir; məzmun və tarixlər ilkin işçi fərziyyələrdir."}
+    },
+    ru: {
+      nav:{home:"Главная", about:"О нас", forum:"Форум", tickets:"Билеты", news:"Новости", university:"Университетская серия", partners:"Партнёрство", contact:"Контакты"},
+      hero:{eyebrow:"Инженерная платформа", title:"Инженерия, на связи.",
+        body:"ENG-X — платформа, объединяющая инженеров, будущих инженеров, индустрию и академическую среду. Цель — превратить инженерный потенциал в реальный прогресс через обмен знаниями, профессиональные связи и совместные проекты.",
+        ctaPrimary:"Выбрать билет", ctaSecondary:"Узнать о программе"},
+      about:{eyebrow:"О нас", title:"Система больше, чем одно мероприятие",
+        body:"Инженерные знания, люди и возможности применения становятся сильнее вместе. ENG-X — платформа, созданная для этой связи. Объединяя инженеров, будущих инженеров, университеты, индустрию и инновационную экосистему, ENG-X делает акцент на практическом обмене знаниями и целенаправленном сотрудничестве. Форум, сообщество, индустриальные связи, проекты и цифровая среда — части единого подхода.",
+        pillarsTitle:"Пять направлений",
+        pillars:[{name:"Форум",desc:"Живая платформа знаний, дискуссий и связей."},{name:"Сообщество",desc:"Профессиональная связь, продолжающаяся после встречи."},{name:"Индустрия",desc:"Партнёрство и диалог по отраслевым задачам."},{name:"Проекты",desc:"Проекты, создающие применение, испытания и решения."},{name:"Цифровая среда",desc:"Цифровая инфраструктура знаний, программ и связи."}]},
+      forum:{eyebrow:"ENG-X Forum 2026", title:"Мост будущего: инженерия", note:"Тема мероприятия; рабочее название.",
+        desc:"Флагманское мероприятие ENG-X объединяет инженеров, студентов и представителей индустрии на одной сцене. Выступления, networking, coffee break и участие компаний — в одной программе.",
+        metaLabels:{venue:"Место", date:"Дата", duration:"Продолжительность", format:"Формат"},
+        meta:{venue:"Кинотеатр «Низами», Баку", date:"Апрель 2026, воскресенье (уточняется)", duration:"4–5 часов", format:"Выступления, networking, coffee break"},
+        stats:[{value:"500",label:"Ожидаемых участников (ориентир)"},{value:"110",label:"VIP-мест (первичное распределение)"},{value:"6–10",label:"Спикеров"},{value:"4–5",label:"Часов программы"}],
+        statsNote:"Цифры — первичные рабочие ориентиры; будут уточнены."},
+      tickets:{eyebrow:"Билеты", title:"Выберите билет", subtitle:"Цена и количество — первичный план (диапазон 20–30 AZN); будут уточнены.",
+        tiers:[{name:"Стандартный билет",price:"от 20 AZN",features:["Вход и основная программа","Networking","Coffee break"]},{name:"VIP-билет",price:"от 30 AZN",features:["Зарезервированное место","VIP-зона networking","Личное общение со спикерами"]}],
+        formTitle:"Заказ", labels:{name:"Имя и фамилия",email:"Эл. почта",phone:"Телефон",type:"Тип билета",qty:"Количество",submit:"Перейти к оплате"},
+        epointNote:"Оплата будет производиться через систему Epoint.",
+        integrationNotice:"Ваш заказ зарегистрирован. Интеграция оплаты Epoint находится в разработке — с вами свяжутся по указанным контактным данным для подтверждения.",
+        errorRequired:"Пожалуйста, заполните все поля."},
+      news:{eyebrow:"Новости", title:"Последние новости", readMore:"Читать далее", close:"Закрыть",
+        items:[
+          {date:"19.09.2026", title:"Представлена концепция ENG-X Forum", excerpt:"Определены место, формат и тема флагманского мероприятия.", body:"ENG-X Forum 2026 пройдёт в Баку, в кинотеатре «Низами». Рабочая тема мероприятия — «Мост будущего: инженерия». Программа объединяет выступления, networking и coffee break; ожидается участие около 500 человек. Все цифры являются первичным планом и будут уточнены."},
+          {date:"19.09.2026", title:"Объявлен план Университетской серии на 2026 год", excerpt:"Первые три мероприятия пилотного этапа — ADNSU, AzTU и BANM — внесены в календарь.", body:"В рамках ENG-X University Series на 2026 год запланированы три мероприятия: 22 октября — ADNSU, 19 ноября — Азербайджанский технический университет, 10 декабря — Бакинская высшая нефтяная школа. Эти три мероприятия рассматриваются как пилотный этап; результаты станут основой следующего этапа."},
+          {date:"19.09.2026", title:"ENG-X закрепил принципы независимого бренда", excerpt:"Партнёрство не означает владение — ENG-X сохраняет собственный бренд, стратегию и roadmap.", body:"Работая с институциональными партнёрами, ENG-X руководствуется принципом «Partnership ≠ Ownership». Название бренда, логотип, визуальная идентичность, домен, коммерческая модель и долгосрочный roadmap остаются за ENG-X. Партнёры могут выступать со-организаторами конкретных мероприятий, при этом платформа остаётся под независимым управлением ENG-X."}
+        ]},
+      university:{eyebrow:"Университетская серия", title:"ENG-X University Tour 2026–2027", note:"Первичный roadmap; даты могут измениться.",
+        years:[
+          {year:"2026", events:[{date:"22 октября",name:"ADNSU"},{date:"19 ноября",name:"Азербайджанский технический университет"},{date:"10 декабря",name:"Бакинская высшая нефтяная школа"}]},
+          {year:"2027", events:[{date:"11 марта",name:"Бакинский инженерный университет"},{date:"22 апреля",name:"Азербайджанский университет архитектуры и строительства"},{date:"20 мая",name:"Сумгаитский государственный университет"},{date:"23 сентября",name:"UFAZ"},{date:"21 октября",name:"Хазарский университет"},{date:"18 ноября",name:"Карабахский университет"}]}
+        ]},
+      partners:{eyebrow:"Партнёрство", title:"Категории партнёров", note:"Философия спонсорских пакетов: Visibility + Access + Talent + Community + Industry Positioning.",
+        items:[{name:"Главный партнёр",desc:"Основные партнёрские обязательства; эксклюзивность только по договору."},{name:"Стратегический партнёр",desc:"Долгосрочная институциональная или стратегическая ценность."},{name:"Индустриальный партнёр",desc:"Отраслевая экспертиза, реальные задачи и сотрудничество."},{name:"Технологический партнёр",desc:"Цифровая, техническая или оборудовательная поддержка."},{name:"Академический партнёр",desc:"Академическое сотрудничество, экспертиза или роль университета."},{name:"Партнёр поддержки",desc:"Финансовый, натуральный или операционный вклад."},{name:"Медиапартнёр",desc:"Согласованная информационная поддержка."}],
+        cta:"Обсудить партнёрство"},
+      contact:{eyebrow:"Контакты", title:"Свяжитесь с нами", note:"Официальные каналы связи будут добавлены после подтверждения.",
+        labels:{name:"Имя и фамилия",email:"Эл. почта",message:"Сообщение",submit:"Отправить"},
+        successNotice:"Ваше сообщение зарегистрировано. Мы свяжемся с вами в ближайшее время."},
+      footer:{rights:"Все права защищены.", status:"Сайт находится в разработке; содержание и даты — первичные рабочие предположения."}
+    },
+    en: {
+      nav:{home:"Home", about:"About", forum:"Forum", tickets:"Tickets", news:"News", university:"University Series", partners:"Partnership", contact:"Contact"},
+      hero:{eyebrow:"Engineering platform", title:"Engineering, connected.",
+        body:"ENG-X is an engineering platform connecting engineers, future engineers, industry, academia and the innovation ecosystem. Its purpose is to turn engineering potential into real progress through knowledge exchange, meaningful connections and practical collaboration.",
+        ctaPrimary:"Choose a ticket", ctaSecondary:"Explore the programme"},
+      about:{eyebrow:"About", title:"A system bigger than one event",
+        body:"Engineering knowledge, people and real-world opportunity are stronger together. ENG-X is the platform built to make that connection. Bringing together engineers, future engineers, universities, industry and the innovation ecosystem, ENG-X puts practical knowledge exchange and purposeful collaboration first. Forum, community, industry engagement, projects and digital infrastructure are parts of one approach.",
+        pillarsTitle:"Five directions",
+        pillars:[{name:"Forum",desc:"A live platform for knowledge, discussion and connection."},{name:"Community",desc:"Professional connection that continues after the event."},{name:"Industry",desc:"Partnership and dialogue around industry challenges."},{name:"Projects",desc:"Projects that create application, testing and solutions."},{name:"Digital",desc:"The digital infrastructure for knowledge, programmes and connection."}]},
+      forum:{eyebrow:"ENG-X Forum 2026", title:"Bridge to the future: engineering", note:"Event theme; working title.",
+        desc:"ENG-X's flagship event brings engineers, students and industry representatives together on one stage. Talks, networking, coffee breaks and corporate participation share one programme.",
+        metaLabels:{venue:"Venue", date:"Date", duration:"Duration", format:"Format"},
+        meta:{venue:"Nizami Cinema Centre, Baku", date:"April 2026, a Sunday (to be confirmed)", duration:"4–5 hours", format:"Talks, networking, coffee break"},
+        stats:[{value:"500",label:"Expected attendees (initial target)"},{value:"110",label:"VIP seats (initial split)"},{value:"6–10",label:"Speakers"},{value:"4–5",label:"Hours of programme"}],
+        statsNote:"Figures are initial working targets and will be updated as they are confirmed."},
+      tickets:{eyebrow:"Tickets", title:"Choose your ticket", subtitle:"Price and allocation are an initial plan (20–30 AZN range) and will be updated as they are confirmed.",
+        tiers:[{name:"General ticket",price:"from 20 AZN",features:["Entry and main programme","Networking","Coffee break"]},{name:"VIP ticket",price:"from 30 AZN",features:["Reserved seating","VIP networking area","Closer access to speakers"]}],
+        formTitle:"Order", labels:{name:"Full name",email:"Email",phone:"Phone",type:"Ticket type",qty:"Quantity",submit:"Proceed to payment"},
+        epointNote:"Payment will be processed through Epoint.",
+        integrationNotice:"Your order has been recorded. Epoint payment integration is still being set up — we'll reach out using the contact details you provided to confirm.",
+        errorRequired:"Please fill in all fields."},
+      news:{eyebrow:"News", title:"Latest news", readMore:"Read more", close:"Close",
+        items:[
+          {date:"2026-09-19", title:"ENG-X Forum concept unveiled", excerpt:"Venue, format and theme are set for the flagship event.", body:"ENG-X Forum 2026 will take place in Baku, at the Nizami Cinema Centre. The event's working theme is “Bridge to the future: engineering.” The programme combines talks, networking and coffee breaks, with around 500 attendees expected. All figures are an initial plan and will be updated as they are confirmed."},
+          {date:"2026-09-19", title:"2026 University Series plan announced", excerpt:"The first three pilot-phase events — ADNSU, AzTU and BANM — are on the calendar.", body:"Under the ENG-X University Series, three events are planned for 2026: October 22 at ADNSU, November 19 at Azerbaijan Technical University, and December 10 at Baku Higher Oil School. These three events form the pilot phase; the results will shape the next stage."},
+          {date:"2026-09-19", title:"ENG-X sets out its independent brand principles", excerpt:"Partnership does not mean ownership — ENG-X keeps its own brand, strategy and roadmap.", body:"In working with institutional partners, ENG-X follows the principle “Partnership ≠ Ownership.” The brand name, logo, visual identity, domain, commercial model and long-term roadmap stay with ENG-X. Partners may co-organize specific events, while the platform remains under ENG-X's independent direction."}
+        ]},
+      university:{eyebrow:"University Series", title:"ENG-X University Tour 2026–2027", note:"Initial roadmap; dates may change.",
+        years:[
+          {year:"2026", events:[{date:"Oct 22",name:"ADNSU"},{date:"Nov 19",name:"Azerbaijan Technical University"},{date:"Dec 10",name:"Baku Higher Oil School"}]},
+          {year:"2027", events:[{date:"Mar 11",name:"Baku Engineering University"},{date:"Apr 22",name:"Azerbaijan University of Architecture and Construction"},{date:"May 20",name:"Sumgayit State University"},{date:"Sep 23",name:"UFAZ"},{date:"Oct 21",name:"Khazar University"},{date:"Nov 18",name:"Karabakh University"}]}
+        ]},
+      partners:{eyebrow:"Partnership", title:"Partner categories", note:"Sponsor-package philosophy: Visibility + Access + Talent + Community + Industry Positioning.",
+        items:[{name:"Main Partner",desc:"Core partnership commitments; exclusivity only by agreement."},{name:"Strategic Partner",desc:"Long-term institutional or strategic value."},{name:"Industry Partner",desc:"Sector expertise, real problems and collaboration."},{name:"Technology Partner",desc:"Digital, technical or equipment support."},{name:"Academic Partner",desc:"Academic collaboration, expertise or a university role."},{name:"Supporting Partner",desc:"Financial, in-kind or operational contribution."},{name:"Media Partner",desc:"Agreed informational support."}],
+        cta:"Let's discuss partnership"},
+      contact:{eyebrow:"Contact", title:"Get in touch", note:"Official contact channels will be added once confirmed.",
+        labels:{name:"Full name",email:"Email",message:"Message",submit:"Send"},
+        successNotice:"Your message has been recorded. We'll be in touch soon."},
+      footer:{rights:"All rights reserved.", status:"The site is under development; content and dates are initial working assumptions."}
+    }
+  };
+
+  var currentLang = "az";
+  try{
+    var saved = localStorage.getItem("engx_lang");
+    if(saved && translations[saved]) currentLang = saved;
+  }catch(e){}
+
+  function get(obj, path){
+    return path.split(".").reduce(function(acc,k){ return (acc && acc[k]!==undefined) ? acc[k] : null; }, obj);
+  }
+
+  function applySimpleI18n(t){
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var val = get(t, el.getAttribute("data-i18n"));
+      if(typeof val === "string") el.textContent = val;
+    });
+  }
+
+  function renderPillars(t){
+    var el = document.getElementById("pillars");
+    var items = t.about.pillars;
+    var isOdd = items.length % 2 === 1;
+    el.innerHTML = items.map(function(p,i){
+      var last = isOdd && i === items.length - 1;
+      return '<div class="pillar'+(last ? ' pillar-wide' : '')+'"><span class="num">0'+(i+1)+'</span><div><h4>'+esc(p.name)+'</h4><p>'+esc(p.desc)+'</p></div></div>';
+    }).join("");
+  }
+
+  function renderForum(t){
+    var ml = t.forum.metaLabels, m = t.forum.meta;
+    var order = ["venue","date","duration","format"];
+    document.getElementById("forumMeta").innerHTML = order.map(function(k){
+      return '<div class="meta-item"><div class="k">'+esc(ml[k])+'</div><div class="v">'+esc(m[k])+'</div></div>';
+    }).join("");
+    document.getElementById("forumStats").innerHTML = t.forum.stats.map(function(s){
+      return '<div class="stat-tile"><div class="val">'+esc(s.value)+'</div><div class="lbl">'+esc(s.label)+'</div></div>';
+    }).join("");
+  }
+
+  function renderTickets(t){
+    var grid = document.getElementById("ticketsGrid");
+    var orderCard = grid.querySelector(".order-card");
+    var tiersHtml = t.tickets.tiers.map(function(tier,i){
+      return '<div class="tier'+(i===1?' vip':'')+'"><div><div class="tier-name">'+esc(tier.name)+'</div><div class="tier-price">'+esc(tier.price)+'</div></div><ul class="tier-feats">'+
+        tier.features.map(function(f){ return '<li>'+esc(f)+'</li>'; }).join("")+
+        '</ul></div>';
+    }).join("");
+    grid.querySelectorAll(".tier").forEach(function(n){ n.remove(); });
+    grid.insertAdjacentHTML("afterbegin", tiersHtml);
+
+    var sel = document.getElementById("ord_type");
+    sel.innerHTML = t.tickets.tiers.map(function(tier){
+      return '<option value="'+esc(tier.name)+'">'+esc(tier.name)+' — '+esc(tier.price)+'</option>';
+    }).join("");
+  }
+
+  function renderNews(t){
+    var grid = document.getElementById("newsGrid");
+    grid.innerHTML = t.news.items.map(function(item,i){
+      return '<button type="button" class="news-card" data-idx="'+i+'"><div class="news-media"></div><div class="news-body">'+
+        '<div class="news-date">'+esc(item.date)+'</div><div class="news-title">'+esc(item.title)+'</div>'+
+        '<div class="news-excerpt">'+esc(item.excerpt)+'</div><div class="news-link">'+esc(t.news.readMore)+' →</div>'+
+        '</div></button>';
+    }).join("");
+    grid.querySelectorAll(".news-card").forEach(function(card){
+      card.addEventListener("click", function(){ openArticle(parseInt(card.getAttribute("data-idx"),10)); });
+    });
+  }
+
+  function renderUniversity(t){
+    var cols = document.getElementById("universityCols");
+    cols.innerHTML = t.university.years.map(function(y){
+      return '<div><div class="tl-year">'+esc(y.year)+'</div><div class="tl-list">'+
+        y.events.map(function(e){ return '<div class="tl-row"><div class="tl-date">'+esc(e.date)+'</div><div class="tl-name">'+esc(e.name)+'</div></div>'; }).join("")+
+        '</div></div>';
+    }).join("");
+  }
+
+  function renderPartners(t){
+    document.getElementById("partnersGrid").innerHTML = t.partners.items.map(function(p){
+      return '<div class="partner-card"><h4>'+esc(p.name)+'</h4><p>'+esc(p.desc)+'</p></div>';
+    }).join("");
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function render(){
+    var t = translations[currentLang];
+    document.documentElement.setAttribute("lang", currentLang);
+    applySimpleI18n(t);
+    renderPillars(t);
+    renderForum(t);
+    renderTickets(t);
+    renderNews(t);
+    renderUniversity(t);
+    renderPartners(t);
+    document.querySelectorAll(".langswitch button").forEach(function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang")===currentLang ? "true":"false");
+    });
+    var orderResult = document.getElementById("orderResult");
+    if(orderResult) orderResult.hidden = true;
+    var orderError = document.getElementById("orderError");
+    if(orderError) orderError.hidden = true;
+  }
+
+  function setLang(lang){
+    if(!translations[lang]) return;
+    currentLang = lang;
+    try{ localStorage.setItem("engx_lang", lang); }catch(e){}
+    render();
+  }
+
+  document.querySelectorAll(".langswitch button").forEach(function(b){
+    b.addEventListener("click", function(){ setLang(b.getAttribute("data-lang")); });
+  });
+
+  // Mobile nav toggle
+  var navToggle = document.getElementById("navToggle");
+  var primaryNav = document.getElementById("primaryNav");
+  navToggle.addEventListener("click", function(){
+    var open = primaryNav.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", open ? "true":"false");
+  });
+  primaryNav.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ primaryNav.classList.remove("open"); navToggle.setAttribute("aria-expanded","false"); });
+  });
+
+  // News modal
+  var modalBackdrop = document.getElementById("modalBackdrop");
+  function openArticle(idx){
+    var t = translations[currentLang];
+    var item = t.news.items[idx];
+    if(!item) return;
+    document.getElementById("modalDate").textContent = item.date;
+    document.getElementById("modalTitle").textContent = item.title;
+    document.getElementById("modalBody").textContent = item.body;
+    modalBackdrop.hidden = false;
+    document.getElementById("modalClose").focus();
+  }
+  document.getElementById("modalClose").addEventListener("click", function(){ modalBackdrop.hidden = true; });
+  modalBackdrop.addEventListener("click", function(e){ if(e.target === modalBackdrop) modalBackdrop.hidden = true; });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape") modalBackdrop.hidden = true; });
+
+  // Order form (Epoint integration point)
+  var orderForm = document.getElementById("orderForm");
+  orderForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var t = translations[currentLang];
+    var name = document.getElementById("ord_name").value.trim();
+    var email = document.getElementById("ord_email").value.trim();
+    var phone = document.getElementById("ord_phone").value.trim();
+    var type = document.getElementById("ord_type").value;
+    var qty = document.getElementById("ord_qty").value;
+    var errorEl = document.getElementById("orderError");
+    var resultEl = document.getElementById("orderResult");
+    if(!name || !email || !phone || !type || !qty){
+      errorEl.hidden = false;
+      resultEl.hidden = true;
+      return;
+    }
+    errorEl.hidden = true;
+    /* --------------------------------------------------------------
+       EPOINT INTEGRATION POINT
+       Epoint requires a server-side call: the merchant secret key must
+       sign the request (public_key + amount + currency + order_id →
+       base64 + HMAC-SHA1 signature) before redirecting the shopper to
+       Epoint's hosted checkout. That signing step cannot happen in
+       this static front end without exposing the secret key, so this
+       demo records the order client-side and shows a confirmation.
+       To go live: POST {name,email,phone,type,qty} to your backend,
+       have it call Epoint's /api/1/request and redirect to the
+       returned checkout URL.
+       -------------------------------------------------------------- */
+    resultEl.textContent = t.tickets.integrationNotice + "  (" + type + " × " + qty + " — " + name + ")";
+    resultEl.hidden = false;
+  });
+
+  var contactForm = document.getElementById("contactForm");
+  contactForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var t = translations[currentLang];
+    var resultEl = document.getElementById("contactResult");
+    resultEl.textContent = t.contact.successNotice;
+    resultEl.hidden = false;
+    contactForm.reset();
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  render();
+})();
+</script>
